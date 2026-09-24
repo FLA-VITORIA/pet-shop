@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop Amigo Fiel - Loja Online</title>
+    <style>
+        /* ===== RESET E ESTILOS GERAIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --secondary: #2c3e50;
+            --accent: #4ecdc4;
+            --light: #f8f9fa;
+            --dark: #1a1a2e;
+            --success: #28a745;
+            --danger: #dc3545;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logo span {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+
+        .cart-icon:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: var(--dark);
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1600') center/cover;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.6);
+        }
+
+        /* ===== SEÇÕES ===== */
+        section {
+            padding: 70px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== SERVIÇOS ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--primary);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ===== PRODUTOS ===== */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .product-info {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+
+        .product-info .category {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .product-info .price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .product-info .btn-add {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: auto;
+        }
+
+        .product-info .btn-add:hover {
+            background: var(--primary);
+        }
+
+        /* ===== SOBRE ===== */
+        .about {
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .about-img {
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .about-text p {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .about-features {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .about-features li {
+            padding: 8px 0;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .about-features li::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* ===== CONTATO ===== */
+        .contact {
+            background: linear-gradient(135deg, var(--secondary), var(--dark));
+            color: white;
+        }
+
+        .contact .section-title,
+        .contact .section-subtitle {
+            color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px 5%;
+        }
+
+        footer p {
+            opacity: 0.7;
+        }
+
+        /* ===== CARRINHO LATERAL ===== */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+            z-index: 2000;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-info .price {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .qty-btn {
+            background: #eee;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: auto;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 2px solid #eee;
+            background: var(--light);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cart-total .total-price {
+            color: var(--primary);
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background: #218838;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+
+        .empty-cart .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== NOTIFICAÇÃO ===== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--success);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 3000;
+            transition: transform 0.4s ease;
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 15px;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            section {
+                padding: 50px 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo span {
+                font-size: 1.5rem;
+            }
+
+            nav ul {
+                gap: 10px;
+                font-size: 0.8rem;
+            }
+
+            .cart-icon {
+                font-size: 1.2rem;
+                padding: 6px 12px;
+            }
+        }
+
+        /* ===== SCROLL SUAVE ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo" onclick="scrollToTop()">
+            <span>🐾</span> Pet Shop Amigo Fiel
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="scrollToSection('servicos')">Serviços</a></li>
+                <li><a onclick="scrollToSection('produtos')">Produtos</a></li>
+                <li><a onclick="scrollToSection('sobre')">Sobre</a></li>
+                <li><a onclick="scrollToSection('contato')">Contato</a></li>
+            </ul>
+        </nav>
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Bem-vindo ao Amigo Fiel</h1>
+        <p>Cuidamos do seu pet com todo carinho e amor. Produtos de qualidade e serviços especializados.</p>
+        <button class="btn" onclick="scrollToSection('produtos')">Ver Produtos</button>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section id="servicos">
+        <h2 class="section-title">Nossos Serviços</h2>
+        <p class="section-subtitle">Cuidado completo para o seu melhor amigo</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="icon">✂️</span>
+                <h3>Banho e Tosa</h3>
+                <p>Banho relaxante e tosa profissional com produtos de alta qualidade para todas as raças.</p>
+            </div>
+            <div class="service-card">
+                <span class="icon">🩺</span>
+                <h3>Consultas Veterinárias</h3>
+                <p>Atendimento veterinário completo com profissionais experientes e apaixonados por animais.</p>
+            </div>
+            <div class="service-card">
+                <span class="icon">🏨</span>
+                <h3>Hospedagem</h3>
+                <p>Seu pet em um ambiente seguro e confortável enquanto você viaja. Cuidado 24 horas.</p>
+            </div>
+            <div class="service-card">
+                <span class="icon">🚗</span>
+                <h3>Leva e Traz</h3>
+                <p>Buscamos e levamos seu pet em casa com todo conforto e segurança.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUTOS -->
+    <section id="produtos" style="background: #f0f2f5;">
+        <h2 class="section-title">Nossa Loja</h2>
+        <p class="section-subtitle">Produtos selecionados com carinho para seu pet</p>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProducts('todos', this)">Todos</button>
+            <button class="filter-btn" onclick="filterProducts('racao', this)">Ração</button>
+            <button class="filter-btn" onclick="filterProducts('brinquedo', this)">Brinquedos</button>
+            <button class="filter-btn" onclick="filterProducts('higiene', this)">Higiene</button>
+            <button class="filter-btn" onclick="filterProducts('acessorio', this)">Acessórios</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="about">
+        <h2 class="section-title">Sobre Nós</h2>
+        <p class="section-subtitle">Conheça nossa história</p>
+        <div class="about-content">
+            <img class="about-img" src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600" alt="Pet Shop">
+            <div class="about-text">
+                <h2>Amor pelos animais desde 2010</h2>
+                <p>O Pet Shop Amigo Fiel nasceu do sonho de oferecer um atendimento diferenciado e acolhedor para todos os pets e seus tutores.</p>
+                <p>Com mais de 10 anos de experiência, nossa equipe é formada por profissionais apaixonados por animais, sempre prontos para oferecer o melhor cuidado.</p>
+                <ul class="about-features">
+                    <li>Profissionais qualificados e apaixonados</li>
+                    <li>Produtos de marcas premium</li>
+                    <li>Ambiente seguro e acolhedor</li>
+                    <li>Atendimento personalizado</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="contact">
+        <h2 class="section-title">Entre em Contato</h2>
+        <p class="section-subtitle">Estamos prontos para atender você e seu pet</p>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="icon">📍</div>
+                <h3>Endereço</h3>
+                <p>Rua dos Animais, 123<br>Centro - São Paulo, SP</p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">📞</div>
+                <h3>Telefone</h3>
+                <p>(11) 99999-9999<br>(11) 3333-3333</p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">✉️</div>
+                <h3>E-mail</h3>
+                <p>contato@amigofiel.com.br</p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">🕐</div>
+                <h3>Horário</h3>
+                <p>Seg a Sex: 8h às 19h<br>Sáb: 8h às 17h</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Pet Shop Amigo Fiel - Todos os direitos reservados 🐾</p>
+    </footer>
+
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- CARRINHO LATERAL -->
+    <aside class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 Meu Carrinho</h2>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart">
+                <span class="icon">🐾</span>
+                Seu carrinho está vazio
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-price" id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Finalizar Compra</button>
+        </div>
+    </aside>
+
+    <!-- NOTIFICAÇÃO -->
+    <div class="notification" id="notification">Produto adicionado ao carrinho!</div>
+
+    <script>
+        /* ===== DADOS DOS PRODUTOS ===== */
+        const products = [
+            {
+                id: 1,
+                name: "Ração Premium Cães Adultos",
+                category: "racao",
+                price: 89.90,
+                img: "https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400"
+            },
+            {
+                id: 2,
+                name: "Ração Gatos Castrados",
+                category: "racao",
+                price: 75.50,
+                img: "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400"
+            },
+            {
+                id: 3,
+                name: "Brinquedo Bola Interativa",
+                category: "brinquedo",
+                price: 34.90,
+                img: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=400"
+            },
+            {
+                id: 4,
+                name: "Corda Dental para Cães",
+                category: "brinquedo",
+                price: 24.90,
+                img: "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=400"
+            },
+            {
+                id: 5,
+                name: "Shampoo Hipoalergênico",
+                category: "higiene",
+                price: 42.00,
+                img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400"
+            },
+            {
+                id: 6,
+                name: "Tapete Higiênico 30un",
+                category: "higiene",
+                price: 59.90,
+                img: "https://images.unsplash.com/photo-1591019479261-1a103585c559?w=400"
+            },
+            {
+                id: 7,
+                name: "Coleira Ajustável",
+                category: "acessorio",
+                price: 45.00,
+                img: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400"
+            },
+            {
+                id: 8,
+                name: "Caminha Confortável M",
+                category: "acessorio",
+                price: 129.90,
+                img: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400"
+            },
+            {
+                id: 9,
+                name: "Petiscos Naturais",
+                category: "racao",
+                price: 28.90,
+                img: "https://images.unsplash.com/photo-1585846888147-3fe14c130048?w=400"
+            },
+            {
+                id: 10,
+                name: "Arranhador para Gatos",
+                category: "brinquedo",
+                price: 89.00,
+                img: "https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=400"
+            },
+            {
+                id: 11,
+                name: "Escova de Pelos",
+                category: "higiene",
+                price: 32.50,
+                img: "https://images.unsplash.com/photo-1591946614720-90a587da4a36?w=400"
+            },
+            {
+                id: 12,
+                name: "Comedouro Automático",
+                category: "acessorio",
+                price: 149.90,
+                img: "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400"
+            }
+        ];
+
+        /* ===== ESTADO DO CARRINHO ===== */
+        let cart = [];
+
+        /* ===== RENDERIZAR PRODUTOS ===== */
+        function renderProducts(filter = 'todos') {
+            const grid = document.getElementById('productsGrid');
+            const filtered = filter === 'todos' 
+                ? products 
+                : products.filter(p => p.category === filter);
+
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card">
+                    <img class="product-img" src="${product.img}" alt="${product.name}" 
+                         onerror="this.src='https://via.placeholder.com/400x200/ff6b35/ffffff?text=Pet+Shop'">
+                    <div class="product-info">
+                        <span class="category">${getCategoryName(product.category)}</span>
+                        <h3>${product.name}</h3>
+                        <div class="price">R$ ${product.price.toFixed(2).replace('.', ',')}</div>
+                        <button class="btn-add" onclick="addToCart(${product.id})">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryName(cat) {
+            const names = {
+                'racao': 'Ração',
+                'brinquedo': 'Brinquedo',
+                'higiene': 'Higiene',
+                'acessorio': 'Acessório'
+            };
+            return names[cat] || cat;
+        }
+
+        /* ===== FILTRAR PRODUTOS ===== */
+        function filterProducts(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProducts(category);
+        }
+
+        /* ===== ADICIONAR AO CARRINHO ===== */
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCart();
+            showNotification('Produto adicionado ao carrinho! 🐾');
+        }
+
+        /* ===== REMOVER DO CARRINHO ===== */
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        /* ===== ALTERAR QUANTIDADE ===== */
+        function changeQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCart();
+            }
+        }
+
+        /* ===== ATUALIZAR CARRINHO ===== */
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <span class="icon">🐾</span>
+                        Seu carrinho está vazio
+                    </div>
+                `;
+                return;
+            }
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.img}" alt="${item.name}" 
+                         onerror="this.src='https://via.placeholder.com/60/ff6b35/ffffff?text=P'">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <div class="price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="cart-item-actions">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                            <button class="remove-item" onclick="removeFromCart(${item.id})" title="Remover">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ===== TOGGLE CARRINHO ===== */
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        /* ===== CHECKOUT ===== */
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Seu carrinho está vazio! 🐾', true);
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            alert(`✅ Pedido realizado com sucesso!\n\n` +
+                  `Itens: ${totalItems}\n` +
+                  `Total: R$ ${total.toFixed(2).replace('.', ',')}\n\n` +
+                  `Obrigado por comprar no Pet Shop Amigo Fiel! 🐾`);
+
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        /* ===== NOTIFICAÇÃO ===== */
+        let notificationTimeout;
+        function showNotification(message, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.style.background = isError ? 'var(--danger)' : 'var(--success)';
+            notif.classList.add('show');
+
+            clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
+                notif.classList.remove('show');
+            }, 2500);
+        }
+
+        /* ===== NAVEGAÇÃO ===== */
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ===== INICIALIZAÇÃO ===== */
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCart();
+
+            // Fechar carrinho com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const sidebar = document.getElementById('cartSidebar');
+                    if (sidebar.classList.contains('open')) toggleCart();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
